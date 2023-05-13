@@ -17,7 +17,7 @@ browser = webdriver.Chrome(chrome_options=chrome_options)
 
 browser.get("https://litnet.com/ru/reader/akademiya-smerti-ili-istinnaya-dlya-demona-2-b427431?c=4770785&p=1")
 html = browser.page_source
-time.sleep(2)
+time.sleep(3)
 #print(html)
 browser.close()
 
@@ -58,20 +58,15 @@ url_fin = list(map("".join, itertools.product(url_list, pages)))
 #print(webarray)
 
 for link in url_fin:
-#	print(link)
-#print(webarray)
+	print(link)
 
-#let book = [];
-#url_fin.forEach(item => {
-#})
-#	browser.get(link)
-	html_loop = browser.page_source
+	browser.get(link)
 	time.sleep(3)
+	html_loop = browser.page_source
 	#print(html_loop)
-	browser.close()
+	#browser.close()
 	soup_loop = BeautifulSoup(html_loop, 'lxml')
-
-
+	browser.close()
 
 #	result_loop = requests.get(link)
 #	content_loop = result_loop.text
@@ -85,5 +80,5 @@ for link in url_fin:
 	print(chapter)
 	text = [i.text for i in box.find_all('p')]
 	print(text)
-#	time.sleep(5)
+	time.sleep(5)
 
