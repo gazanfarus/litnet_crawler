@@ -9,10 +9,11 @@ import time
 #import urllib.request
 
 #-----------------------Primary run to detect pages and chapters---------
-website = 'https://litnet.com/ru/reader/akademiya-smerti-ili-istinnaya-dlya-demona-2-b427431?c=4770785&p=1'
-result =requests.get(website)
+website = 'https://litnet.com/ru/reader/akademiya-smerti-ili-istinnaya-dlya-demona-2-b427431?c=4770785&p=2'
+result = requests.get(website)
 content = result.text
 soup = BeautifulSoup(content, 'lxml')
+print(soup.prettify())
 
 #-------Chapter select--------
 page_chap = soup.find('div', class_='select_change_arrow')
@@ -41,25 +42,24 @@ url_fin = list(map("".join, itertools.product(url_list, pages)))
 #webarray = url_fin
 #print(webarray)
 
-for link in url_fin:
+#for link in url_fin:
 #	print(link)
 #print(webarray)
-	result_loop =requests.get(link)
-	content_loop = result.text
-	soup_loop = BeautifulSoup(content_loop, 'lxml')
+
+#let book = [];
+#url_fin.forEach(item => {
+#})
+#	result_loop = requests.get(link)
+#	content_loop = result_loop.text
+#	soup_loop = BeautifulSoup(content_loop, 'lxml')
 
 #-------------------Print Chapter and Text-------------------
-	box = soup_loop.find('div', class_='reader-text font-size-medium')
-	chapter = box.find('h2').get_text()
-	print(chapter)
-	text =[i.text for i in box.find_all('p')]
-	print(text)
-	time.sleep(5)
+#	box = soup_loop.find('div', class_='reader-text font-size-medium')
+#	box1 = soup_loop.find('div')
+#	box1 = soup_loop.find(class_='jsReaderText')
+#	chapter = box.find('h2').get_text()
+#	print(chapter)
+#	text = [i.text for i in box.find_all('p')]
+#	print(text)
+#	time.sleep(5)
 
-
-#----------Junk----------
-#transcript = jsreader.find('p').get_text()
-#print(transcript)
-
-#test = soup.find('p', style_='text-align:justify;')
-#print(test)
