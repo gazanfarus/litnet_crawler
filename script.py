@@ -5,6 +5,7 @@
 from bs4 import BeautifulSoup
 import requests
 import itertools
+import time
 #import urllib.request
 
 #-----------------------Primary run to detect pages and chapters---------
@@ -17,19 +18,15 @@ soup = BeautifulSoup(content, 'lxml')
 page_chap = soup.find('div', class_='select_change_arrow')
 page = page_chap.select('option[value]')
 values = [item.get('value') for item in page]
-print(values)
+#print(values)
 
 url='https://litnet.com/ru/reader/akademiya-smerti-ili-istinnaya-dlya-demona-2-b427431?c='
 
 url_list=["{}{}&p=".format(url,i) for i in values]
 
-#url_fin=[url_list.append(i) for i in range(1,10)]
-
-#url_fin=["{}{}".format(url_list,i) for i in range(1,10)]
-
-a_list = ["1", "2", "3", "4", "5", "6", "7", "8"]
-url_fin = list(map("".join, itertools.product(url_list, a_list)))
-print(url_fin)
+pages = ["1", "2", "3", "4", "5", "6", "7", "8"]
+url_fin = list(map("".join, itertools.product(url_list, pages)))
+#print(url_fin)
 
 #------HTML code print------
 #print(soup.prettify())
@@ -40,13 +37,24 @@ print(url_fin)
 #textbox = soup.find('p')
 
 
+#---------LOOP---------
+#webarray = url_fin
+#print(webarray)
+
+for link in url_fin:
+#	print(link)
+#print(webarray)
+	result_loop =requests.get(link)
+	content_loop = result.text
+	soup_loop = BeautifulSoup(content_loop, 'lxml')
 
 #-------------------Print Chapter and Text-------------------
-box = soup.find('div', class_='reader-text font-size-medium')
-chapter = box.find('h2').get_text()
-#print(chapter))
-text =[i.text for i in box.find_all('p')]
-#print(text)
+	box = soup_loop.find('div', class_='reader-text font-size-medium')
+	chapter = box.find('h2').get_text()
+	print(chapter)
+	text =[i.text for i in box.find_all('p')]
+	print(text)
+	time.sleep(5)
 
 
 #----------Junk----------
