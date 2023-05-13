@@ -9,17 +9,28 @@ import time
 #import urllib.request
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+#from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import InvalidSessionIdException
 
-
-chrome_options = Options()
-chrome_options.add_argument("user-data-dir=selenium") 
-browser = webdriver.Chrome(chrome_options=chrome_options)
+options = Options()
+options.add_argument("user-data-dir=selenium") 
+#options.add_argument('--disable-gpu')
+#options.add_argument('--no-sandbox')
+#options.add_argument('--disable-setuid-sandbox')
+#options.add_argument('--disable-dev-shm-usage')
+#options.add_argument("--start-maximized")
+#options.add_argument("--window-size=1920,1080")
+browser = webdriver.Chrome(options=options)
+#browser = webdriver.Chrome()
 
 browser.get("https://litnet.com/ru/reader/akademiya-smerti-ili-istinnaya-dlya-demona-2-b427431?c=4770785&p=1")
 html = browser.page_source
 time.sleep(3)
 #print(html)
 browser.close()
+
+#driver.close()
+#browser.quit()
 
 #-----------------------Primary run to detect pages and chapters---------
 #website = 'https://litnet.com/ru/reader/akademiya-smerti-ili-istinnaya-dlya-demona-2-b427431?c=4770785&p=2'
@@ -59,26 +70,27 @@ url_fin = list(map("".join, itertools.product(url_list, pages)))
 
 for link in url_fin:
 	print(link)
-
-	browser.get(link)
-	time.sleep(3)
-	html_loop = browser.page_source
-	#print(html_loop)
-	#browser.close()
-	soup_loop = BeautifulSoup(html_loop, 'lxml')
-	browser.close()
+	try:
+		browser = webdriver.Chrome(options=options)
+		browser.get(link)
+		time.sleep(3)
+		html_loop = browser.page_source
+		soup_loop = BeautifulSoup(html_loop, 'lxml')
+		browser.close()
 
 #	result_loop = requests.get(link)
 #	content_loop = result_loop.text
 #	soup_loop = BeautifulSoup(content_loop, 'lxml')
 
-#-------------------Print Chapter and Text-------------------
-	box = soup_loop.find('div', class_='reader-text font-size-medium')
-#	box1 = soup_loop.find('div')
-#	box1 = soup_loop.find(class_='jsReaderText')
-	chapter = box.find('h2').get_text()
-	print(chapter)
-	text = [i.text for i in box.find_all('p')]
-	print(text)
-	time.sleep(5)
 
+		box = soup_loop.find('div', class_='reader-text font-size-medium')
+
+#		chapter = box.find('h2').get_text()
+#		print(chapter)
+
+		text = [i.text for i in box.find_all('p')]
+		print(text)
+
+		time.sleep(5)
+	except InvalidSessionIdException:
+		print('FAIL')
