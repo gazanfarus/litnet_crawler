@@ -84,13 +84,32 @@ for link in url_fin:
 
 
 		box = soup_loop.find('div', class_='reader-text font-size-medium')
+		try:
+			chapter = box.find('h2').get_text()
+			print(chapter)
+		except:
+			print("No chapter found")
+		else:
+			with open("book.txt") as testfile:
+				word = chapter
+				inhalt = testfile.read ()
+			if word not in inhalt:
+				 with open("book.txt", 'a') as testfile:
+      					 testfile.write(word+ "\n")
+		
+		finally:
+			text = [i.text for i in box.find_all('p')]
+			text_join = ' '.join(text)
+			print(text_join)
+		
+			with open("book.txt") as testfile:
+				word1 = text_join
+				inhalt = testfile.read ()
+			if word1 not in inhalt:
+				with open("book.txt", 'a') as testfile:
+					testfile.write(word1+ "\n")
 
-#		chapter = box.find('h2').get_text()
-#		print(chapter)
 
-		text = [i.text for i in box.find_all('p')]
-		print(text)
-
-		time.sleep(5)
+			time.sleep(5)
 	except InvalidSessionIdException:
 		print('FAIL')
